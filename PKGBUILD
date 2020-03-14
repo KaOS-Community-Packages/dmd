@@ -1,11 +1,11 @@
 pkgname=('dmd')
-pkgdesc='The D programming language reference compiler'
+pkgdesc='The D programming language reference compiler and Phobos standard library.'
 pkgver=2.090.1
 pkgrel=1
 arch=('x86_64')
 url='https://www.dlang.org'
 backup=('etc/dmd.conf')
-depends=('gcc' 'libphobos')
+depends=('gcc' 'gcc-libs')
 makedepends=('git')
 license=('Boost')
 source=("git+https://github.com/dlang/dmd.git#tag=v$pkgver"
@@ -46,6 +46,18 @@ build() {
     make -C docs DMD=ldmd2 AUTO_BOOTSTRAP=1
 }
 package() {
+    mkdir -p "$pkgdir"/usr/lib
+    cp -P $(find "$srcdir"/{druntime,phobos}/generated/linux/release/ \( -iname "*.a" -a \! -iname "*.so.a" \) -o \( -iname "*.so*" -a \! -iname "*.o" -a \! -iname "*.a" \) ) "$pkgdir"/usr/lib
+
+    mkdir -p "$pkgdir"/usr/include/dlang/dmd
+    cp -r "$srcdir"/phobos/{*.d,etc,std} "$pkgdir"/usr/include/dlang/dmd
+    cp -r "$srcdir"/druntime/import/* "$pkgdir"/usr/include/dlang/dmd/
+
+    find "$pkgdir"/usr -type f | xargs chmod 0644
+
+    install -Dm644 "$srcdir"/druntime/LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE-druntime
+    install -Dm644 "$srcdir"/phobos/LICENSE_1_0.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
     cd "$srcdir"/dmd
 
     install -Dm755 "$srcdir"/dmd/generated/linux/release/*/dmd "$pkgdir"/usr/bin/dmd
