@@ -1,6 +1,6 @@
 pkgname=('dmd')
 pkgdesc='The D programming language reference compiler and Phobos standard library.'
-pkgver=2.091.1
+pkgver=2.091.0
 pkgrel=1
 arch=('x86_64')
 url='https://www.dlang.org'
@@ -21,7 +21,7 @@ sha256sums=('SKIP'
 	    'SKIP'
 	    'SKIP'
 	    '6e4bd4ee73a553921cdca7e3e21768b842b18186d07c0b4898fbd13a359875c0'
-            '3d639e89528fed1da90006f4dfb2b0fdc41308da5a96d953381ff4ccf257c035'
+        '3d639e89528fed1da90006f4dfb2b0fdc41308da5a96d953381ff4ccf257c035'
 	    '4b7b8722b3fa11082f0f332397b1b66c85b30ce773c43c3fedcba5768a1484b1'
 )
 prepare() {
